@@ -2,8 +2,8 @@ from django.conf.urls import url
 from tutorials import views 
  
 urlpatterns = [ 
-    url(r'^api/magazynGlobalny$', views.magazynGlobalny_list),
-    url(r'^api/magazynGlobalny/(?P<pk>[0-9]+)$', views.magazynGlobalny_detail),
-    url(r'^api/magazynLokalny$', views.magazynLokalny_list),
-    url(r'^api/magazynLokalny/(?P<pk>[0-9]+)$', views.magazynLokalny_detail)
+    url(r'^api/GlobalWarehouse$', views.GlobalWarehouse_list),
+    url(r'^api/GlobalWarehouse/(?P<pk>[0-9]+)$', views.GlobalWarehouse_detail),
+    url(r'^api/LocalWarehouse$', views.LocalWarehouse_list),
+    url(r'^api/LocalWarehouse/(?P<pk>[0-9]+)$', views.LocalWarehouse_detail)
 ]

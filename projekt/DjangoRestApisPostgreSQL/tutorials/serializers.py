@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from tutorials.models import Magazyn_globalny
-from tutorials.models import Magazyn_lokalny
+from tutorials.models import LocalWarehouse
+from tutorials.models import GlobalWarehouse
  
 class GlobalWarehouseSerializer(serializers.ModelSerializer):
  
     class Meta:
-        model = Magazyn_globalny
+        model = GlobalWarehouse
         fields = ('id_global_warehouse',
                   'city',
                   'street',
@@ -16,7 +16,7 @@ class GlobalWarehouseSerializer(serializers.ModelSerializer):
 class LocalWarehouseSerializer(serializers.ModelSerializer):
  
     class Meta:
-        model = Magazyn_lokalny
+        model = LocalWarehouse
         fields = ('id_local_warehouse',
                   'id_global_warehouse',
                   'city',

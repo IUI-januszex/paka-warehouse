@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
-from tutorials.models import Magazyn_globalny
+from tutorials.models import GlobalWarehouse
 from tutorials.serializers import GlobalWarehouseSerializer
-from tutorials.models import Magazyn_lokalny
+from tutorials.models import LocalWarehouse
 from tutorials.serializers import LocalWarehouseSerializer
 from rest_framework.decorators import api_view
 import datetime
@@ -27,9 +27,9 @@ def validPostalCode(data):
         return "not correct postal code"
 
 @api_view(['GET', 'POST', 'DELETE'])
-def magazynGlobalny_list(request):
+def GlobalWarehouse_list(request):
     if request.method == 'GET':
-        magGlobalny = Magazyn_globalny.objects.all()
+        magGlobalny = GlobalWarehouse.objects.all()
         magGlobalny_serializer = GlobalWarehouseSerializer(magGlobalny, many=True)
         return JsonResponse(magGlobalny_serializer.data, safe=False)
     elif request.method == 'POST':
@@ -52,16 +52,16 @@ def magazynGlobalny_list(request):
             return JsonResponse(magGlobalny_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(magGlobalny_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
-        count = Magazyn_globalny.objects.all().delete()
+        count = GlobalWarehouse.objects.all().delete()
         return JsonResponse({"count":count[0],
             'message': 'All Global warehouses have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
-def magazynGlobalny_detail(request, pk):
+def GlobalWarehouse_detail(request, pk):
     try: 
-        magGlobalny = Magazyn_globalny.objects.get(pk=pk) 
-    except Magazyn_globalny.DoesNotExist: 
+        magGlobalny = GlobalWarehouse.objects.get(pk=pk) 
+    except GlobalWarehouse.DoesNotExist: 
         datetime_object = datetime.datetime.now()
         return JsonResponse({'timestamp':datetime_object,
         'message': 'Not found Global warehouse with this PK'}, status=status.HTTP_404_NOT_FOUND) 
@@ -93,9 +93,9 @@ def magazynGlobalny_detail(request, pk):
  
 
 @api_view(['GET', 'POST', 'DELETE'])
-def magazynLokalny_list(request):
+def LocalWarehouse_list(request):
     if request.method == 'GET':
-        magLokalny = Magazyn_lokalny.objects.all()
+        magLokalny = LocalWarehouse.objects.all()
         magLokalny_serializer = LocalWarehouseSerializer(magLokalny, many=True)
         return JsonResponse(magLokalny_serializer.data, safe=False)
     elif request.method == 'POST':
@@ -118,16 +118,16 @@ def magazynLokalny_list(request):
             return JsonResponse(magLokalny_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(magLokalny_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
-        count = Magazyn_lokalny.objects.all().delete()
+        count = LocalWarehouse.objects.all().delete()
         return JsonResponse({"count":count[0],
             'message': 'All Local warehouses have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
-def magazynLokalny_detail(request, pk):
+def LocalWarehouse_detail(request, pk):
     try: 
-        magLokalny = Magazyn_lokalny.objects.get(pk=pk) 
-    except Magazyn_lokalny.DoesNotExist: 
+        magLokalny = LocalWarehouse.objects.get(pk=pk) 
+    except LocalWarehouse.DoesNotExist: 
         datetime_object = datetime.datetime.now()
         return JsonResponse({'timestamp':datetime_object,
         'message': 'Not found Local warehouse with this PK'}, status=status.HTTP_404_NOT_FOUND)
