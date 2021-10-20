@@ -19,7 +19,7 @@ class LocalWarehouse(models.Model):
 
 
 class RangePostalCode(models.Model):
-    idRangePostalCode=models.IntegerField(primary_key=True)
+    idRangePostalCode=models.CharField(max_length=6,primary_key=True)
     idLocalWarehouse = models.ForeignKey(LocalWarehouse, on_delete=models.CASCADE)
 
 
