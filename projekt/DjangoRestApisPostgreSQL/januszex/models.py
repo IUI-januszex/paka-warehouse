@@ -5,17 +5,17 @@ class GlobalWarehouse(models.Model):
     idGlobalWarehouse=models.IntegerField(primary_key=True)
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
-    numer = models.CharField(max_length=255)
+    number = models.CharField(max_length=255)
     postalCode = models.CharField(max_length=6)
 
 
 class LocalWarehouse(models.Model):
     idLocalWarehouse=models.IntegerField(primary_key=True)
-    idGlobalWarehouse = models.ForeignKey(GlobalWarehouse, on_delete=models.CASCADE)
     city = models.CharField(max_length=255)
-    ulica = models.CharField(max_length=255)
-    numer = models.CharField(max_length=255)
+    street = models.CharField(max_length=255)
+    number = models.CharField(max_length=255)
     postalCode = models.CharField(max_length=6) 
+    idGlobalWarehouse = models.ForeignKey(GlobalWarehouse, on_delete=models.CASCADE)
 
 
 class RangePostalCode(models.Model):

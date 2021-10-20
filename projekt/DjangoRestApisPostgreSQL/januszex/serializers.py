@@ -11,7 +11,7 @@ class GlobalWarehouseSerializer(serializers.ModelSerializer):
         fields = ('idGlobalWarehouse',
                   'city',
                   'street',
-                  'numer',
+                  'number',
                   'postalCode')
 
 
@@ -20,11 +20,11 @@ class LocalWarehouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = LocalWarehouse
         fields = ('idLocalWarehouse',
-                  'idGlobalWarehouse',
                   'city',
                   'street',
-                  'numer',
-                  'postalCode')
+                  'number',
+                  'postalCode',
+                  'idGlobalWarehouse')
 
 
 class RangePostalCodeSerializer(serializers.ModelSerializer):

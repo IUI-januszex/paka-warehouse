@@ -95,6 +95,9 @@ def globalWarehouseDetail(request, pk):
         return JsonResponse({'message': 'globalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
 
+
+
+
 @api_view(['GET', 'POST', 'DELETE'])
 def localWarehouseList(request):
     if request.method == 'GET':
