@@ -200,3 +200,16 @@ def rangePostalCodeDetail(request, pk):
     elif request.method == 'DELETE': 
         rangePostalCode.delete() 
         return JsonResponse({'message': 'rangePostalCode have been removed'}, status=status.HTTP_204_NO_CONTENT)
+
+import json
+#@api_view(['GET'])
+def getLocalWarehouseFromPostalCode(request):
+    postalCode = JSONParser().parse(request)
+    postalCode=postalCode['PostalCode']
+    rangePostalCode = RangePostalCode.objects.filter(idRangePostalCode=postalCode)
+    rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, many=True)
+    if(len(rangePostalCodeSerializer.data)==0):
+        return JsonResponse({"idLocalWarehouse":-1}, safe=False)
+    idLocalWarehouse=(rangePostalCodeSerializer.data[0]['idLocalWarehouse'])
+    return JsonResponse({"idLocalWarehouse":idLocalWarehouse}, safe=False)
+
