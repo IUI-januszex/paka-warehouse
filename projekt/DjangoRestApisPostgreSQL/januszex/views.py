@@ -1,8 +1,4 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
-
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
@@ -13,23 +9,9 @@ from januszex.serializers import LocalWarehouseSerializer
 from januszex.models import RangePostalCode
 from januszex.serializers import RangePostalCodeSerializer
 from rest_framework.decorators import api_view
-import datetime
-import re
+from januszex.methods import Tools
 
-def validTableNoneAndBlank(data):
-    #sprawdza czy wszytskie pola nie sa nullami i czy nie są puste
-    for key in data.keys():
-        if(data[key] is None or data[key]==""):
-            return "Nor correct "+key
-    return True
 
-def validPostalCode(data):
-    postalCode=data["PostacCode"]
-    reg=r"[0-9]{2}-[0-9]{3}"
-    if (re.match(reg,postalCode)):
-        return True
-    else:
-        return "Not correcrt PostalCode"
 
 @api_view(['GET', 'POST', 'DELETE'])
 def globalWarehouseList(request):
@@ -38,28 +20,20 @@ def globalWarehouseList(request):
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, many=True)
         return JsonResponse(globalWarehouseSerializer.data, safe=False)
     elif request.method == 'POST':
-        globalWarehouseSerializerData = JSONParser().parse(request)
-        messageFromValid = validTableNoneAndBlank(globalWarehouseSerializerData)
-        if(messageFromValid is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
-        messageFromValid = validPostalCode(globalWarehouseSerializerData)
-        if(validPostalCode(globalWarehouseSerializerData) is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
-        globalWarehouseSerializer = GlobalWarehouseSerializer(data=globalWarehouseSerializerData)
+        globalWarehouseData = JSONParser().parse(request)
+        if (Tools.validNoneAndBlank(globalWarehouseData)is not True):
+            return (Tools.validNoneAndBlank(globalWarehouseData))
+        if (Tools.validPostalCode(globalWarehouseData['postalCode'])is not True):
+            return (Tools.validPostalCode(globalWarehouseData['postalCode']))
+        globalWarehouseSerializer = GlobalWarehouseSerializer(data=globalWarehouseData)
         if globalWarehouseSerializer.is_valid():
             globalWarehouseSerializer.save()
             return JsonResponse(globalWarehouseSerializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(globalWarehouseSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Tools.returnError("Not corect data")
     elif request.method == 'DELETE':
         count = GlobalWarehouse.objects.all().delete()
         return JsonResponse({"count":count[0],
-            'message': 'GlobalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
+            'message': 'globalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -67,29 +41,22 @@ def globalWarehouseDetail(request, pk):
     try: 
         globalWarehouse = GlobalWarehouse.objects.get(pk=pk) 
     except GlobalWarehouse.DoesNotExist: 
-        return JsonResponse({'message': 'Not found GlobalWarehouse with this PK'}, status=status.HTTP_404_NOT_FOUND) 
+        return Tools.returnError("Not found GlobalWarehouse with this PK")
     if request.method == 'GET': 
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse) 
         return JsonResponse(globalWarehouseSerializer.data) 
     elif request.method == 'PUT': 
         globalWarehouseData = JSONParser().parse(request) 
-        messageFromValid = validTableNoneAndBlank(globalWarehouseData)
-        if(messageFromValid is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
-        messageFromValid = validPostalCode(globalWarehouseData)
-        if(validPostalCode(globalWarehouseData) is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
+        if (Tools.validNoneAndBlank(globalWarehouseData)is not True):
+            return (Tools.validNoneAndBlank(globalWarehouseData))
+        if (Tools.validPostalCode(globalWarehouseData['postalCode'])is not True):
+            return (Tools.validPostalCode(globalWarehouseData['postalCode']))
+
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, data=globalWarehouseData) 
         if globalWarehouseSerializer.is_valid(): 
             globalWarehouseSerializer.save() 
             return JsonResponse(globalWarehouseSerializer.data) 
-        return JsonResponse(globalWarehouseSerializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return Tools.returnError("Not corect data") 
     elif request.method == 'DELETE': 
         globalWarehouse.delete() 
         return JsonResponse({'message': 'globalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
@@ -105,28 +72,20 @@ def localWarehouseList(request):
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse, many=True)
         return JsonResponse(localWarehouseSerializer.data, safe=False)
     elif request.method == 'POST':
-        localWarehouseSerializerData = JSONParser().parse(request)
-        messageFromValid = validTableNoneAndBlank(localWarehouseSerializerData)
-        if(messageFromValid is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
-        messageFromValid = validPostalCode(localWarehouseSerializerData)
-        if(validPostalCode(localWarehouseSerializerData) is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
-        localWarehouseSerializer = LocalWarehouseSerializer(data=localWarehouseSerializerData)
+        localWarehouseData = JSONParser().parse(request)
+        if (Tools.validNoneAndBlank(localWarehouseData)is not True):
+            return (Tools.validNoneAndBlank(localWarehouseData))
+        if (Tools.validPostalCode(localWarehouseData['postalCode'])is not True):
+            return (Tools.validPostalCode(localWarehouseData['postalCode']))
+        localWarehouseSerializer = LocalWarehouseSerializer(data=localWarehouseData)
         if localWarehouseSerializer.is_valid():
             localWarehouseSerializer.save()
             return JsonResponse(localWarehouseSerializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(localWarehouseSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Tools.returnError("Not corect data")
     elif request.method == 'DELETE':
         count = LocalWarehouse.objects.all().delete()
         return JsonResponse({"count":count[0],
-            'message': 'LocalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
+            'message': 'localWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -134,29 +93,21 @@ def localWarehouseDetail(request, pk):
     try: 
         localWarehouse = LocalWarehouse.objects.get(pk=pk) 
     except LocalWarehouse.DoesNotExist: 
-        return JsonResponse({'message': 'Not found LocalWarehouse with this PK'}, status=status.HTTP_404_NOT_FOUND) 
+        return Tools.returnError("Not found LocalWarehouse with this PK")
     if request.method == 'GET': 
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse) 
         return JsonResponse(localWarehouseSerializer.data) 
     elif request.method == 'PUT': 
         localWarehouseData = JSONParser().parse(request) 
-        messageFromValid = validTableNoneAndBlank(localWarehouseData)
-        if(messageFromValid is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
-        messageFromValid = validPostalCode(localWarehouseData)
-        if(validPostalCode(localWarehouseData) is not True):
-            datetime_object = datetime.datetime.now()
-            return JsonResponse({
-                'timestamp':datetime_object,
-                'message':messageFromValid}, status=status.HTTP_400_BAD_REQUEST)
+        if (Tools.validNoneAndBlank(localWarehouseData)is not True):
+            return (Tools.validNoneAndBlank(localWarehouseData))
+        if (Tools.validPostalCode(localWarehouseData['postalCode'])is not True):
+            return (Tools.validPostalCode(localWarehouseData['postalCode']))
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse, data=localWarehouseData) 
         if localWarehouseSerializer.is_valid(): 
             localWarehouseSerializer.save() 
             return JsonResponse(localWarehouseSerializer.data) 
-        return JsonResponse(localWarehouseSerializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return Tools.returnError("Not corect data")
     elif request.method == 'DELETE': 
         localWarehouse.delete() 
         return JsonResponse({'message': 'localWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
@@ -169,16 +120,20 @@ def rangePostalCodeList(request):
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, many=True)
         return JsonResponse(rangePostalCodeSerializer.data, safe=False)
     elif request.method == 'POST':
-        rangePostalCodeSerializerData = JSONParser().parse(request)
-        rangePostalCodeSerializer = RangePostalCodeSerializer(data=rangePostalCodeSerializerData)
+        rangePostalCodeData = JSONParser().parse(request)
+        if (Tools.validNoneAndBlank(rangePostalCodeData)is not True):
+            return (Tools.validNoneAndBlank(rangePostalCodeData))
+        if (Tools.validPostalCode(rangePostalCodeData['postalCode'])is not True):
+            return (Tools.validPostalCode(rangePostalCodeData['postalCode']))
+        rangePostalCodeSerializer = RangePostalCodeSerializer(data=rangePostalCodeData)
         if rangePostalCodeSerializer.is_valid():
             rangePostalCodeSerializer.save()
             return JsonResponse(rangePostalCodeSerializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(rangePostalCodeSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Tools.returnError("Not corect data")
     elif request.method == 'DELETE':
         count = RangePostalCode.objects.all().delete()
         return JsonResponse({"count":count[0],
-            'message': 'RangePostalCode have been removed'}, status=status.HTTP_204_NO_CONTENT)
+            'message': 'rangePostalCode have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -186,12 +141,16 @@ def rangePostalCodeDetail(request, pk):
     try: 
         rangePostalCode = RangePostalCode.objects.get(pk=pk) 
     except RangePostalCode.DoesNotExist: 
-        return JsonResponse({'message': 'Not found RangePostalCode with this PK'}, status=status.HTTP_404_NOT_FOUND) 
+        return Tools.returnError("Not found RangePostalCode with this PK")
     if request.method == 'GET': 
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode) 
         return JsonResponse(rangePostalCodeSerializer.data) 
     elif request.method == 'PUT': 
         rangePostalCodeData = JSONParser().parse(request) 
+        if (Tools.validNoneAndBlank(rangePostalCodeData)is not True):
+            return (Tools.validNoneAndBlank(rangePostalCodeData))
+        if (Tools.validPostalCode(rangePostalCodeData['idRangePostalCode'])is not True):
+            return (Tools.validPostalCode(rangePostalCodeData['idRangePostalCode']))
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, data=rangePostalCodeData) 
         if rangePostalCodeSerializer.is_valid(): 
             rangePostalCodeSerializer.save() 
@@ -201,15 +160,34 @@ def rangePostalCodeDetail(request, pk):
         rangePostalCode.delete() 
         return JsonResponse({'message': 'rangePostalCode have been removed'}, status=status.HTTP_204_NO_CONTENT)
 
-import json
-#@api_view(['GET'])
+
+
+
+@api_view(['GET'])
 def getLocalWarehouseFromPostalCode(request):
     postalCode = JSONParser().parse(request)
-    postalCode=postalCode['PostalCode']
-    rangePostalCode = RangePostalCode.objects.filter(idRangePostalCode=postalCode)
-    rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, many=True)
-    if(len(rangePostalCodeSerializer.data)==0):
-        return JsonResponse({"idLocalWarehouse":-1}, safe=False)
-    idLocalWarehouse=(rangePostalCodeSerializer.data[0]['idLocalWarehouse'])
-    return JsonResponse({"idLocalWarehouse":idLocalWarehouse}, safe=False)
+    if (Tools.validPostalCode(postalCode['postalCode'])is not True):
+        return (Tools.validPostalCode(postalCode['postalCode']))
+    LocalWarehouse=Tools.getLocalWarehouseFromPostalCodeHelp(postalCode['postalCode'])
+    return JsonResponse({"idLocalWarehouse":LocalWarehouse}, safe=False)
+
+
+@api_view(['GET'])
+def getTrack(request):
+    postalCodes = JSONParser().parse(request)
+    if (Tools.validPostalCode(postalCodes['postalCodeSource'])is not True):
+        return (Tools.validPostalCode(postalCodes['postalCodeSource']))
+    if (Tools.validPostalCode(postalCodes['postalCodeDestination'])is not True):
+        return (Tools.validPostalCode(postalCodes['postalCodeDestination']))
+    sourceWarehouse=Tools.getLocalWarehouseFromPostalCodeHelp(postalCodes['postalCodeSource'])
+    destinationWarehouse=Tools.getLocalWarehouseFromPostalCodeHelp(postalCodes['postalCodeDestination'])
+    if(sourceWarehouse is None or destinationWarehouse is None):
+        Tools.returnError("We do not support this postal code")
+    track=Tools.getTrackHelp(sourceWarehouse,destinationWarehouse)
+    jsonTrack=Tools.getJsonTrackFromList(track)
+    return JsonResponse(jsonTrack, safe=False)
+
+    
+
+
 
