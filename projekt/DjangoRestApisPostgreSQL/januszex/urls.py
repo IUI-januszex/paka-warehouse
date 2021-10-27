@@ -11,3 +11,6 @@ urlpatterns = [
     url(r'^api/getWarehouseFromCode$', views.getLocalWarehouseFromPostalCode),
     url(r'^api/getTrack$', views.getTrack)
 ]
+
+
+#dodaj wysiwetlenie listy magazynwi lok ktore naleza do konkretnego glob

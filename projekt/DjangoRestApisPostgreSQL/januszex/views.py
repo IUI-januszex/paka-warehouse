@@ -169,6 +169,8 @@ def getLocalWarehouseFromPostalCode(request):
     if (Tools.validPostalCode(postalCode['postalCode'])is not True):
         return (Tools.validPostalCode(postalCode['postalCode']))
     LocalWarehouse=Tools.getLocalWarehouseFromPostalCodeHelp(postalCode['postalCode'])
+    if(LocalWarehouse is None):
+        return Tools.returnError("We don't support this postal code")
     return JsonResponse({"idLocalWarehouse":LocalWarehouse}, safe=False)
 
 
@@ -185,6 +187,8 @@ def getTrack(request):
         Tools.returnError("We do not support this postal code")
     track=Tools.getTrackHelp(sourceWarehouse,destinationWarehouse)
     jsonTrack=Tools.getJsonTrackFromList(track)
+    if(jsonTrack is None):
+        return Tools.returnError("We don't support this postal code")
     return JsonResponse(jsonTrack, safe=False)
 
     
