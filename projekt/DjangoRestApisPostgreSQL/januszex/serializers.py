@@ -12,7 +12,8 @@ class GlobalWarehouseSerializer(serializers.ModelSerializer):
                   'city',
                   'street',
                   'number',
-                  'postalCode')
+                  'postalCode',
+                  'active')
 
 
 class LocalWarehouseSerializer(serializers.ModelSerializer):
@@ -24,6 +25,7 @@ class LocalWarehouseSerializer(serializers.ModelSerializer):
                   'street',
                   'number',
                   'postalCode',
+                  'active',
                   'idGlobalWarehouse')
 
 

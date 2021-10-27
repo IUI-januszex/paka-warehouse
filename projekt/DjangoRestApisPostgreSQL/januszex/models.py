@@ -7,6 +7,7 @@ class GlobalWarehouse(models.Model):
     street = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
     postalCode = models.CharField(max_length=6)
+    active=models.BooleanField(default=False)
 
 
 class LocalWarehouse(models.Model):
@@ -14,7 +15,8 @@ class LocalWarehouse(models.Model):
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
-    postalCode = models.CharField(max_length=6) 
+    postalCode = models.CharField(max_length=6)
+    active=models.BooleanField(default=False) 
     idGlobalWarehouse = models.ForeignKey(GlobalWarehouse, on_delete=models.CASCADE)
 
 
