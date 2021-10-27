@@ -5,6 +5,8 @@ from januszex.models import RangePostalCode
 from januszex.serializers import RangePostalCodeSerializer
 from januszex.models import LocalWarehouse
 from januszex.serializers import LocalWarehouseSerializer
+from januszex.models import GlobalWarehouse
+from januszex.serializers import GlobalWarehouseSerializer
 import re
 
 class Tools():
@@ -60,3 +62,49 @@ class Tools():
             "idLocalWarehouseDestination":track[3]
         }
         return jsonTrack
+
+    def getGlobalWarehouseFilter(field,value):
+        if(field not in ['idGlobalWarehouse','city','street','number','postalCode','active']):
+            return None
+        try: 
+            if(field=="idGlobalWarehouse"):
+                globalWarehouse=GlobalWarehouse.objects.filter(idGlobalWarehouse=value)
+            if(field=="city"):
+                globalWarehouse=GlobalWarehouse.objects.filter(city=value)
+            if(field=="street"):
+                globalWarehouse=GlobalWarehouse.objects.filter(street=value)
+            if(field=="number"):
+                globalWarehouse=GlobalWarehouse.objects.filter(number=value)
+            if(field=="postalCode"):
+                globalWarehouse=GlobalWarehouse.objects.filter(postalCode=value)
+            if(field=="active"):
+                globalWarehouse=GlobalWarehouse.objects.filter(active=value)
+        except GlobalWarehouse.DoesNotExist: 
+            return None
+        globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse,many=True) 
+        return globalWarehouseSerializer
+    
+    def getLocalWarehouseFilter(field,value):
+        if(field not in ['idLocalWarehouse','city','street','number','postalCode','active','idGlobalWarehouse']):
+            return None
+        try: 
+            if(field=="idLocalWarehouse"):
+                localWarehouse=LocalWarehouse.objects.filter(idLocalWarehouse=value)
+            if(field=="city"):
+                localWarehouse=LocalWarehouse.objects.filter(city=value)
+            if(field=="street"):
+                localWarehouse=LocalWarehouse.objects.filter(street=value)
+            if(field=="number"):
+                localWarehouse=LocalWarehouse.objects.filter(number=value)
+            if(field=="postalCode"):
+                localWarehouse=LocalWarehouse.objects.filter(postalCode=value)
+            if(field=="active"):
+                localWarehouse=LocalWarehouse.objects.filter(active=value)
+            if(field=="idGlobalWarehouse"):
+                localWarehouse=LocalWarehouse.objects.filter(idGlobalWarehouse=value)
+        except LocalWarehouse.DoesNotExist: 
+            return None
+        localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse,many=True) 
+        return localWarehouseSerializer
+
+

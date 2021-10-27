@@ -1,3 +1,4 @@
+from django.db import models
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
@@ -62,8 +63,13 @@ def globalWarehouseDetail(request, pk):
         return JsonResponse({'message': 'globalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
 
-
-
+@api_view(['GET'])
+def globalWarehouseFilter(request,pole,value):
+    globalWarehouseSerializer=Tools.getGlobalWarehouseFilter(pole,value)
+    if(globalWarehouseSerializer is None):
+        return Tools.returnError("Not valid field")
+    return JsonResponse(globalWarehouseSerializer.data, safe=False)
+    
 
 @api_view(['GET', 'POST', 'DELETE'])
 def localWarehouseList(request):
@@ -112,6 +118,12 @@ def localWarehouseDetail(request, pk):
         localWarehouse.delete() 
         return JsonResponse({'message': 'localWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def localWarehouseFilter(request,pole,value):
+    localWarehouseSerializer=Tools.getLocalWarehouseFilter(pole,value)
+    if(localWarehouseSerializer is None):
+        return Tools.returnError("Not valid field")
+    return JsonResponse(localWarehouseSerializer.data, safe=False)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def rangePostalCodeList(request):
@@ -191,7 +203,8 @@ def getTrack(request):
         return Tools.returnError("We don't support this postal code")
     return JsonResponse(jsonTrack, safe=False)
 
-    
+
+
 
 
 
