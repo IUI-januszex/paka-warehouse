@@ -175,7 +175,7 @@ def rangePostalCodeDetail(request, pk):
 
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def getLocalWarehouseFromPostalCode(request):
     postalCode = JSONParser().parse(request)
     if (Tools.validPostalCode(postalCode['postalCode'])is not True):
@@ -186,7 +186,7 @@ def getLocalWarehouseFromPostalCode(request):
     return JsonResponse({"idLocalWarehouse":LocalWarehouse}, safe=False)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def getTrack(request):
     postalCodes = JSONParser().parse(request)
     if (Tools.validPostalCode(postalCodes['postalCodeSource'])is not True):
