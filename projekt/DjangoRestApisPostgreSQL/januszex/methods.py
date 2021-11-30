@@ -1,6 +1,7 @@
 import datetime
 from django.http.response import JsonResponse
 from rest_framework import status
+import rest_framework
 from januszex.models import RangePostalCode
 from januszex.serializers import RangePostalCodeSerializer
 from januszex.models import LocalWarehouse
@@ -58,7 +59,7 @@ class Tools():
         jsonTrack={
             "idLocalWarehouseSource":track[0],
             "idGlobalWarehouse1":track[1],
-            "idGloablWarehouse2":track[2],
+            "idGlobalWarehouse2":track[2],
             "idLocalWarehouseDestination":track[3]
         }
         return jsonTrack
@@ -106,5 +107,26 @@ class Tools():
             return None
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse,many=True) 
         return localWarehouseSerializer
+
+
+    def changeKeys(data):
+        #nizej jesli pojedynczy json
+        if isinstance(data.data,rest_framework.utils.serializer_helpers.ReturnDict):
+            json=dict(data.data)
+            if 'idGlobalWarehouse' in json.keys():
+                json['idWarehouse'] = json.pop('idGlobalWarehouse')
+            if 'idLocalWarehouse' in json.keys():
+                json['idWarehouse'] = json.pop('idLocalWarehouse')
+            return json
+
+        #nizej jesli lista jsonow
+        for i in data.data:
+            if 'idGlobalWarehouse' in i.keys():
+                i['idWarehouse'] = i.pop('idGlobalWarehouse')
+            if 'idLocalWarehouse' in i.keys():
+                i['idWarehouse'] = i.pop('idLocalWarehouse')
+        return data.data
+
+
 
 
