@@ -109,20 +109,30 @@ class Tools():
         return localWarehouseSerializer
 
 
-    def changeKeys(data):
+    def changeKeysGlobal(data):
         #nizej jesli pojedynczy json
         if isinstance(data.data,rest_framework.utils.serializer_helpers.ReturnDict):
             json=dict(data.data)
             if 'idGlobalWarehouse' in json.keys():
                 json['idWarehouse'] = json.pop('idGlobalWarehouse')
-            if 'idLocalWarehouse' in json.keys():
-                json['idWarehouse'] = json.pop('idLocalWarehouse')
             return json
 
         #nizej jesli lista jsonow
         for i in data.data:
             if 'idGlobalWarehouse' in i.keys():
                 i['idWarehouse'] = i.pop('idGlobalWarehouse')
+        return data.data
+
+    def changeKeysLocal(data):
+        #nizej jesli pojedynczy json
+        if isinstance(data.data,rest_framework.utils.serializer_helpers.ReturnDict):
+            json=dict(data.data)
+            if 'idLocalWarehouse' in json.keys():
+                json['idWarehouse'] = json.pop('idLocalWarehouse')
+            return json
+
+        #nizej jesli lista jsonow
+        for i in data.data:
             if 'idLocalWarehouse' in i.keys():
                 i['idWarehouse'] = i.pop('idLocalWarehouse')
         return data.data

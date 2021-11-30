@@ -19,7 +19,7 @@ def globalWarehouseList(request):
     if request.method == 'GET':
         globalWarehouse = GlobalWarehouse.objects.all()
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, many=True)
-        afterChangeKeys=Tools.changeKeys(globalWarehouseSerializer)
+        afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
         return JsonResponse(afterChangeKeys, safe=False)
     elif request.method == 'POST':
         globalWarehouseData = JSONParser().parse(request)
@@ -30,7 +30,7 @@ def globalWarehouseList(request):
         globalWarehouseSerializer = GlobalWarehouseSerializer(data=globalWarehouseData)
         if globalWarehouseSerializer.is_valid():
             globalWarehouseSerializer.save()
-            afterChangeKeys=Tools.changeKeys(globalWarehouseSerializer)
+            afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
             return JsonResponse(afterChangeKeys, status=status.HTTP_201_CREATED) 
         return Tools.returnError("Not corect data")
     elif request.method == 'DELETE':
@@ -47,7 +47,7 @@ def globalWarehouseDetail(request, pk):
         return Tools.returnError("Not found GlobalWarehouse with this PK")
     if request.method == 'GET': 
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse) 
-        afterChangeKeys=Tools.changeKeys(globalWarehouseSerializer)
+        afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
         return JsonResponse(afterChangeKeys) 
     elif request.method == 'PUT': 
         globalWarehouseData = JSONParser().parse(request) 
@@ -59,7 +59,7 @@ def globalWarehouseDetail(request, pk):
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, data=globalWarehouseData) 
         if globalWarehouseSerializer.is_valid(): 
             globalWarehouseSerializer.save() 
-            afterChangeKeys=Tools.changeKeys(globalWarehouseSerializer)
+            afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
             return JsonResponse(afterChangeKeys) 
         return Tools.returnError("Not corect data") 
     elif request.method == 'DELETE': 
@@ -72,7 +72,7 @@ def globalWarehouseFilter(request,pole,value):
     globalWarehouseSerializer=Tools.getGlobalWarehouseFilter(pole,value)
     if(globalWarehouseSerializer is None):
         return Tools.returnError("Not valid field")
-    afterChangeKeys=Tools.changeKeys(globalWarehouseSerializer)
+    afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
     return JsonResponse(afterChangeKeys, safe=False)
     
 
@@ -81,8 +81,8 @@ def localWarehouseList(request):
     if request.method == 'GET':
         localWarehouse = LocalWarehouse.objects.all()
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse, many=True)
-        afterChangeKeys=Tools.changeKeys(localWarehouseSerializer)
-        return JsonResponse(afterChangeKeys, safe=False)
+        afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
+        return JsonResponse(localWarehouseSerializer.data, safe=False)
     elif request.method == 'POST':
         localWarehouseData = JSONParser().parse(request)
         if (Tools.validNoneAndBlank(localWarehouseData)is not True):
@@ -92,7 +92,7 @@ def localWarehouseList(request):
         localWarehouseSerializer = LocalWarehouseSerializer(data=localWarehouseData)
         if localWarehouseSerializer.is_valid():
             localWarehouseSerializer.save()
-            afterChangeKeys=Tools.changeKeys(localWarehouseSerializer)
+            afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
             return JsonResponse(afterChangeKeys, status=status.HTTP_201_CREATED) 
         return Tools.returnError("Not corect data")
     elif request.method == 'DELETE':
@@ -109,7 +109,7 @@ def localWarehouseDetail(request, pk):
         return Tools.returnError("Not found LocalWarehouse with this PK")
     if request.method == 'GET': 
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse) 
-        afterChangeKeys=Tools.changeKeys(localWarehouseSerializer)
+        afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
         return JsonResponse(afterChangeKeys) 
     elif request.method == 'PUT': 
         localWarehouseData = JSONParser().parse(request) 
@@ -120,7 +120,7 @@ def localWarehouseDetail(request, pk):
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse, data=localWarehouseData) 
         if localWarehouseSerializer.is_valid(): 
             localWarehouseSerializer.save() 
-            afterChangeKeys=Tools.changeKeys(localWarehouseSerializer)
+            afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
             return JsonResponse(afterChangeKeys) 
         return Tools.returnError("Not corect data")
     elif request.method == 'DELETE': 
@@ -132,7 +132,7 @@ def localWarehouseFilter(request,pole,value):
     localWarehouseSerializer=Tools.getLocalWarehouseFilter(pole,value)
     if(localWarehouseSerializer is None):
         return Tools.returnError("Not valid field")
-    afterChangeKeys=Tools.changeKeys(localWarehouseSerializer)
+    afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
     return JsonResponse(afterChangeKeys, safe=False) 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -140,7 +140,7 @@ def rangePostalCodeList(request):
     if request.method == 'GET':
         rangePostalCode = RangePostalCode.objects.all()
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, many=True)
-        afterChangeKeys=Tools.changeKeys(rangePostalCodeSerializer)
+        afterChangeKeys=Tools.changeKeysLocal(rangePostalCodeSerializer)
         return JsonResponse(afterChangeKeys, safe=False) 
     elif request.method == 'POST':
         rangePostalCodeData = JSONParser().parse(request)
@@ -151,7 +151,7 @@ def rangePostalCodeList(request):
         rangePostalCodeSerializer = RangePostalCodeSerializer(data=rangePostalCodeData)
         if rangePostalCodeSerializer.is_valid():
             rangePostalCodeSerializer.save()
-            afterChangeKeys=Tools.changeKeys(rangePostalCodeSerializer)
+            afterChangeKeys=Tools.changeKeysLocal(rangePostalCodeSerializer)
             return JsonResponse(afterChangeKeys, status=status.HTTP_201_CREATED) 
         return Tools.returnError("Not corect data")
     elif request.method == 'DELETE':
@@ -168,7 +168,7 @@ def rangePostalCodeDetail(request, pk):
         return Tools.returnError("Not found RangePostalCode with this PK")
     if request.method == 'GET': 
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode) 
-        afterChangeKeys=Tools.changeKeys(rangePostalCodeSerializer)
+        afterChangeKeys=Tools.changeKeysLocal(rangePostalCodeSerializer)
         return JsonResponse(afterChangeKeys) 
     elif request.method == 'PUT': 
         rangePostalCodeData = JSONParser().parse(request) 
@@ -179,7 +179,7 @@ def rangePostalCodeDetail(request, pk):
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, data=rangePostalCodeData) 
         if rangePostalCodeSerializer.is_valid(): 
             rangePostalCodeSerializer.save() 
-            afterChangeKeys=Tools.changeKeys(rangePostalCodeSerializer)
+            afterChangeKeys=Tools.changeKeysLocal(rangePostalCodeSerializer)
             return JsonResponse(afterChangeKeys) 
         return JsonResponse(rangePostalCodeSerializer.errors, status=status.HTTP_400_BAD_REQUEST) 
     elif request.method == 'DELETE': 
