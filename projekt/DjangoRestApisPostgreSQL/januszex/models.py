@@ -2,7 +2,8 @@ from django.db import models
 
 #my_validator = RegexValidator(r"A", "Your string should contain letter A in it.")
 class GlobalWarehouse(models.Model):
-    idGlobalWarehouse=models.IntegerField(primary_key=True)
+    #idGlobalWarehouse=models.IntegerField(primary_key=True)
+    idGlobalWarehouse=models.BigAutoField(primary_key=True)
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
@@ -11,7 +12,7 @@ class GlobalWarehouse(models.Model):
 
 
 class LocalWarehouse(models.Model):
-    idLocalWarehouse=models.IntegerField(primary_key=True)
+    idLocalWarehouse=models.BigAutoField(primary_key=True)
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     number = models.CharField(max_length=255)

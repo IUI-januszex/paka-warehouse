@@ -22,7 +22,10 @@ def globalWarehouseList(request):
         afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
         return JsonResponse(afterChangeKeys, safe=False)
     elif request.method == 'POST':
-        globalWarehouseData = JSONParser().parse(request)
+        try:
+            globalWarehouseData = JSONParser().parse(request)
+        except:
+            return Tools.returnError("Not corect request")
         if (Tools.validNoneAndBlank(globalWarehouseData)is not True):
             return (Tools.validNoneAndBlank(globalWarehouseData))
         if (Tools.validPostalCode(globalWarehouseData['postalCode'])is not True):
@@ -39,6 +42,13 @@ def globalWarehouseList(request):
             'message': 'globalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
  
+
+        # try:
+        #     globalWarehouseData = JSONParser().parse(request)
+        # except:
+        #     return Tools.returnError("Not corect request")
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def globalWarehouseDetail(request, pk):
     try: 
@@ -50,12 +60,14 @@ def globalWarehouseDetail(request, pk):
         afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
         return JsonResponse(afterChangeKeys) 
     elif request.method == 'PUT': 
-        globalWarehouseData = JSONParser().parse(request) 
+        try:
+            globalWarehouseData = JSONParser().parse(request)
+        except:
+            return Tools.returnError("Not corect request")
         if (Tools.validNoneAndBlank(globalWarehouseData)is not True):
             return (Tools.validNoneAndBlank(globalWarehouseData))
         if (Tools.validPostalCode(globalWarehouseData['postalCode'])is not True):
             return (Tools.validPostalCode(globalWarehouseData['postalCode']))
-
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, data=globalWarehouseData) 
         if globalWarehouseSerializer.is_valid(): 
             globalWarehouseSerializer.save() 
@@ -84,7 +96,10 @@ def localWarehouseList(request):
         afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
         return JsonResponse(localWarehouseSerializer.data, safe=False)
     elif request.method == 'POST':
-        localWarehouseData = JSONParser().parse(request)
+        try:
+            localWarehouseData = JSONParser().parse(request)
+        except:
+            return Tools.returnError("Not corect request")
         if (Tools.validNoneAndBlank(localWarehouseData)is not True):
             return (Tools.validNoneAndBlank(localWarehouseData))
         if (Tools.validPostalCode(localWarehouseData['postalCode'])is not True):
@@ -100,7 +115,6 @@ def localWarehouseList(request):
         return JsonResponse({"count":count[0],
             'message': 'localWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
- 
 @api_view(['GET', 'PUT', 'DELETE'])
 def localWarehouseDetail(request, pk):
     try: 
@@ -112,7 +126,10 @@ def localWarehouseDetail(request, pk):
         afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
         return JsonResponse(afterChangeKeys) 
     elif request.method == 'PUT': 
-        localWarehouseData = JSONParser().parse(request) 
+        try:
+            localWarehouseData = JSONParser().parse(request)
+        except:
+            return Tools.returnError("Not corect request")
         if (Tools.validNoneAndBlank(localWarehouseData)is not True):
             return (Tools.validNoneAndBlank(localWarehouseData))
         if (Tools.validPostalCode(localWarehouseData['postalCode'])is not True):
@@ -143,11 +160,14 @@ def rangePostalCodeList(request):
         afterChangeKeys=Tools.changeKeysLocal(rangePostalCodeSerializer)
         return JsonResponse(afterChangeKeys, safe=False) 
     elif request.method == 'POST':
-        rangePostalCodeData = JSONParser().parse(request)
+        try:
+            rangePostalCodeData = JSONParser().parse(request)
+        except:
+            return Tools.returnError("Not corect request")
         if (Tools.validNoneAndBlank(rangePostalCodeData)is not True):
             return (Tools.validNoneAndBlank(rangePostalCodeData))
-        if (Tools.validPostalCode(rangePostalCodeData['postalCode'])is not True):
-            return (Tools.validPostalCode(rangePostalCodeData['postalCode']))
+        if (Tools.validPostalCode(rangePostalCodeData['idRangePostalCode'])is not True):
+            return (Tools.validPostalCode(rangePostalCodeData['idRangePostalCode']))
         rangePostalCodeSerializer = RangePostalCodeSerializer(data=rangePostalCodeData)
         if rangePostalCodeSerializer.is_valid():
             rangePostalCodeSerializer.save()
@@ -171,11 +191,11 @@ def rangePostalCodeDetail(request, pk):
         afterChangeKeys=Tools.changeKeysLocal(rangePostalCodeSerializer)
         return JsonResponse(afterChangeKeys) 
     elif request.method == 'PUT': 
-        rangePostalCodeData = JSONParser().parse(request) 
-        if (Tools.validNoneAndBlank(rangePostalCodeData)is not True):
-            return (Tools.validNoneAndBlank(rangePostalCodeData))
-        if (Tools.validPostalCode(rangePostalCodeData['idRangePostalCode'])is not True):
-            return (Tools.validPostalCode(rangePostalCodeData['idRangePostalCode']))
+        try:
+            rangePostalCodeData = JSONParser().parse(request)
+        except:
+            return Tools.returnError("Not corect request")
+        rangePostalCodeData['idRangePostalCode']=pk
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, data=rangePostalCodeData) 
         if rangePostalCodeSerializer.is_valid(): 
             rangePostalCodeSerializer.save() 
@@ -189,9 +209,12 @@ def rangePostalCodeDetail(request, pk):
 
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def getLocalWarehouseFromPostalCode(request):
-    postalCode = JSONParser().parse(request)
+    try:
+        postalCode = JSONParser().parse(request)
+    except:
+        return Tools.returnError("Not corect request")
     if (Tools.validPostalCode(postalCode['postalCode'])is not True):
         return (Tools.validPostalCode(postalCode['postalCode']))
     LocalWarehouse=Tools.getLocalWarehouseFromPostalCodeHelp(postalCode['postalCode'])
@@ -200,9 +223,12 @@ def getLocalWarehouseFromPostalCode(request):
     return JsonResponse({"idWarehouse":LocalWarehouse}, safe=False)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def getTrack(request):
-    postalCodes = JSONParser().parse(request)
+    try:
+        postalCodes = JSONParser().parse(request)
+    except:
+        return Tools.returnError("Not corect request")
     if (Tools.validPostalCode(postalCodes['postalCodeSource'])is not True):
         return (Tools.validPostalCode(postalCodes['postalCodeSource']))
     if (Tools.validPostalCode(postalCodes['postalCodeDestination'])is not True):
