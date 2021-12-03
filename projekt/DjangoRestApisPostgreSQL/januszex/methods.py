@@ -9,8 +9,40 @@ from januszex.serializers import LocalWarehouseSerializer
 from januszex.models import GlobalWarehouse
 from januszex.serializers import GlobalWarehouseSerializer
 import re
+import jwt
+
+
 
 class Tools():
+    def permission(nameFunction,method,token):
+        permissionList=[
+            "globalWarehouseListGET",
+            "globalWarehouseDetailGET",
+            "globalWarehouseFilterGET",
+            "localWarehouseListGET",
+            "localWarehouseDetailGET",
+            "localWarehouseFilterGET",
+            "rangePostalCodeDetailGET",
+            "getLocalWarehouseFromPostalCodeGET",
+            "getTrackGET"
+        ]
+        function=nameFunction+method
+        if (function in permissionList):
+            return True
+
+        if(token is not None):
+            token=token[7:]
+            decoded = jwt.decode(token, "rRYaQlIsv4TiaBuqVlCurRYaQlIsv4TiaBuqVlCu",algorithms=['HS256'],audience = "Test")
+            role=decoded['Role']
+            if(role=="Admin"):
+                return True
+            else:
+                return False
+        else:
+            #nie ma tokena
+            return False
+
+
     def returnError(message):
         datetime_object = datetime.datetime.now()
         return JsonResponse({
