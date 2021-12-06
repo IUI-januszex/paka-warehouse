@@ -1,0 +1,21 @@
+#1. Wersja Python'a z której korzystałem do implementacji to 3.6.8 ale na wydaje mi się że większość innych wersji od 3.0 w górę będzie równie dobra
+#2. Aby uruchomić Warehouses należy sklonować repo 
+#3. Kolejnym krokiem jest podpięcie swojej bazy postressql. Ja używam bazy Postgressql w wersji 14 postawionej lokalnie na PC. Aby podpiąć swoja baze należy przejść do pliku DjangoRestApisPostgreSQL\DjangoRestApisPostgreSQL\settings.py do linii 80 i podmienić nazwę swojej bazy, użytkownika i hasło. Dla mnie wygląda to tak:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+#4. Kolejnym krokiem jest przejście do miejsca gdzie znajduje się plik manage.py, czyli cd DjangoRestApisPostgreSQL
+#5. Teraz chcemy wykonąć migracje bazy, czyli stworzenie wszystkich tabel, relacji itp. Robimy to za pomocą polecenia "python manage.py makemigrations". Po wykonaniu tego polecenia NIE MAMY JESZCZE zmigorwanej bazy. Mamy dopiero utworzony plik do wykonania tej migracji
+#6. Aby wykonać taką migracje nalezy wykonać polecenie "python manage.py migrate". Po tym kroku powinnyśmy mieć już PUSTĄ BAZE. Aby dodać rekordy należy ręcznie wprowadzić inserty które są w katalogu "sql" w repo. Można to zrobić np za pomocą "pg Admin"
+#7. Teraz tak na prawdę mamy juz wszystko do uruchomienia serwera, a robimy to za pomocą polecenia "python manage.py runserver XXXX", gdzie XXXX to numer portu, czyli na przykład: "python manage.py runserver 8080"
+#8. na 99% będą wyświetlały się błędy typu "No module named ******", gdzie ****** to nazwa jakiegoś modułu/pakietu. Po prostu instalując czystego pythona mamy go bardzo okrojonego. Aby dodać do niego jakieś nowe funkcjonalności należy pobrać/zainstalować sobie dodatkowe pakiety. Robimy to poprzez polecenie pip install ***** lub pip install *****==2.8.21 jeśli chcemy konkretnie zainstalować pakiet ***** w konkretnej wersji 2.8.21.
+#9. UWAGA, WYJĄTEK!!!! Dla błędu "No module jwt" używamy polecenia "pip intstall PyJwt" a nie "pip intstall jwt"
+#10. Z reguły wystarczy podawanie samej nazwy czyli aby zainstalować przykładowo pakiet pandas należy użyć polecenia "pip install pandas", ale jak ktoś by bardzo chciał to obok instrukcji jest plik wersjePakietow.txt gdzie jest lista moich wszystkich pakietów i ich wersji (nie wszystkie pakiety są potrzebne do tego projektu, są to po prostu wszystkie moje pakiety)
