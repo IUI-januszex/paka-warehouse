@@ -24,6 +24,7 @@ def globalWarehouseList(request):
         globalWarehouse = GlobalWarehouse.objects.all()
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, many=True)
         afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
+        afterChangeKeys=sorted(afterChangeKeys, key=lambda k: (k['idWarehouse']))
         return JsonResponse(afterChangeKeys, safe=False)
     elif request.method == 'POST':
         try:
@@ -86,6 +87,7 @@ def globalWarehouseFilter(request,pole,value):
     if(globalWarehouseSerializer is None):
         return Tools.returnError("Not valid field")
     afterChangeKeys=Tools.changeKeysGlobal(globalWarehouseSerializer)
+    afterChangeKeys=sorted(afterChangeKeys, key=lambda k: (k['idWarehouse']))
     return JsonResponse(afterChangeKeys, safe=False)
     
 
@@ -97,6 +99,7 @@ def localWarehouseList(request):
         localWarehouse = LocalWarehouse.objects.all()
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse, many=True)
         afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
+        afterChangeKeys=sorted(afterChangeKeys, key=lambda k: (k['idWarehouse']))
         return JsonResponse(localWarehouseSerializer.data, safe=False)
     elif request.method == 'POST':
         try:
@@ -157,6 +160,7 @@ def localWarehouseFilter(request,pole,value):
     if(localWarehouseSerializer is None):
         return Tools.returnError("Not valid field")
     afterChangeKeys=Tools.changeKeysLocal(localWarehouseSerializer)
+    afterChangeKeys=sorted(afterChangeKeys, key=lambda k: (k['idWarehouse']))
     return JsonResponse(afterChangeKeys, safe=False) 
 
 @api_view(['GET', 'POST', 'DELETE'])

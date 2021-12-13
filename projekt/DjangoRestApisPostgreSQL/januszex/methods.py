@@ -22,7 +22,6 @@ class Tools():
             "localWarehouseListGET",
             "localWarehouseDetailGET",
             "localWarehouseFilterGET",
-            "rangePostalCodeDetailGET",
             "getLocalWarehouseFromPostalCodeGET",
             "getTrackGET"
         ]
