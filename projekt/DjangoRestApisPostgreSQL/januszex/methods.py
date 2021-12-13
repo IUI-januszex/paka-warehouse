@@ -42,11 +42,11 @@ class Tools():
             return False
 
 
-    def returnError(message):
+    def returnError(message,status_param=status.HTTP_400_BAD_REQUEST):
         datetime_object = datetime.datetime.now()
         return JsonResponse({
                 'timestamp':datetime_object,
-                'message':message}, status=status.HTTP_400_BAD_REQUEST)
+                'message':message}, status=status_param)
 
     def validNoneAndBlank(data):
         for key in data.keys():

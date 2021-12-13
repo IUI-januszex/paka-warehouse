@@ -11,7 +11,6 @@ from januszex.models import RangePostalCode
 from januszex.serializers import RangePostalCodeSerializer
 from rest_framework.decorators import api_view
 from januszex.methods import Tools
-
 import sys
 import inspect
 
@@ -19,7 +18,7 @@ import inspect
 @api_view(['GET', 'POST', 'DELETE'])
 def globalWarehouseList(request):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         globalWarehouse = GlobalWarehouse.objects.all()
         globalWarehouseSerializer = GlobalWarehouseSerializer(globalWarehouse, many=True)
@@ -46,11 +45,10 @@ def globalWarehouseList(request):
         return JsonResponse({"count":count[0],
             'message': 'globalWarehouse have been removed'}, status=status.HTTP_204_NO_CONTENT)
  
-
 @api_view(['GET', 'PUT', 'DELETE'])
 def globalWarehouseDetail(request, pk):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     try: 
         globalWarehouse = GlobalWarehouse.objects.get(pk=pk) 
     except GlobalWarehouse.DoesNotExist: 
@@ -82,7 +80,7 @@ def globalWarehouseDetail(request, pk):
 @api_view(['GET'])
 def globalWarehouseFilter(request,pole,value):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     globalWarehouseSerializer=Tools.getGlobalWarehouseFilter(pole,value)
     if(globalWarehouseSerializer is None):
         return Tools.returnError("Not valid field")
@@ -94,7 +92,7 @@ def globalWarehouseFilter(request,pole,value):
 @api_view(['GET', 'POST', 'DELETE'])
 def localWarehouseList(request):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         localWarehouse = LocalWarehouse.objects.all()
         localWarehouseSerializer = LocalWarehouseSerializer(localWarehouse, many=True)
@@ -124,7 +122,7 @@ def localWarehouseList(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def localWarehouseDetail(request, pk):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     try: 
         localWarehouse = LocalWarehouse.objects.get(pk=pk) 
     except LocalWarehouse.DoesNotExist: 
@@ -155,7 +153,7 @@ def localWarehouseDetail(request, pk):
 @api_view(['GET'])
 def localWarehouseFilter(request,pole,value):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     localWarehouseSerializer=Tools.getLocalWarehouseFilter(pole,value)
     if(localWarehouseSerializer is None):
         return Tools.returnError("Not valid field")
@@ -166,7 +164,7 @@ def localWarehouseFilter(request,pole,value):
 @api_view(['GET', 'POST', 'DELETE'])
 def rangePostalCodeList(request):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         rangePostalCode = RangePostalCode.objects.all()
         rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode, many=True)
@@ -196,7 +194,7 @@ def rangePostalCodeList(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def rangePostalCodeDetail(request, pk):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     try: 
         rangePostalCode = RangePostalCode.objects.get(pk=pk) 
     except RangePostalCode.DoesNotExist: 
@@ -227,7 +225,7 @@ def rangePostalCodeDetail(request, pk):
 @api_view(['GET'])
 def getLocalWarehouseFromPostalCode(request):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     try:
         postalCode = JSONParser().parse(request)
     except:
@@ -243,7 +241,7 @@ def getLocalWarehouseFromPostalCode(request):
 @api_view(['GET'])
 def getTrack(request):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
-        return Tools.returnError("Permission denied (JWT)")
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
     try:
         postalCodes = JSONParser().parse(request)
     except:
