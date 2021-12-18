@@ -261,6 +261,14 @@ def getTrack(request):
     return JsonResponse(jsonTrack, safe=False)
 
 
+@api_view(['GET'])
+def rangePostalCodeFromWarehouse(request,value):
+    if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
+        return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
+    rangePostalCode=RangePostalCode.objects.filter(idLocalWarehouse=value)
+    rangePostalCodeSerializer = RangePostalCodeSerializer(rangePostalCode,many=True) 
+    return JsonResponse(rangePostalCodeSerializer.data, safe=False) 
+
 
 
 
