@@ -85,8 +85,8 @@ class Tools():
         return [localWarehouse,globalSource,globalDestination,globalWarehouse]
 
     def getJsonTrackFromList(track):
-        if(None in track):
-            return None
+        # if(None in track):
+        #     return None
         jsonTrack={
             "idLocalWarehouseSource":track[0],
             "idGlobalWarehouse1":track[1],
