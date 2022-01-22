@@ -238,7 +238,7 @@ def getLocalWarehouseFromPostalCode(request):
     return JsonResponse({"idWarehouse":LocalWarehouse}, safe=False)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def getTrack(request):
     if(not Tools.permission(sys._getframe().f_code.co_name,request.method,request.headers.get('Authorization'))):
         return Tools.returnError("Forbidden",status.HTTP_403_FORBIDDEN)
