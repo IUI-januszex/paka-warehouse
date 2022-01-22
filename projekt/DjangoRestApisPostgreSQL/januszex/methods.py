@@ -23,7 +23,7 @@ class Tools():
             "localWarehouseDetailGET",
             "localWarehouseFilterGET",
             "getLocalWarehouseFromPostalCodeGET",
-            "getTrackGET"
+            "getTrackPOST"
         ]
         function=nameFunction+method
         if (function in permissionList):
